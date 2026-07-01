@@ -6,7 +6,7 @@ import { chromium, firefox, test } from "@playwright/test";
 test("Redbus - Chrome, FlipKart - Firefox", async () => {
   const browser = await chromium.launch({ headless: false, channel: "msedge" });
   const context = await browser.newContext();
-  const page = await browser.newPage();
+  const page = await context.newPage();
   await page.goto("https://www.redbus.in");
   const title = await page.title();
   const url = await page.url();
