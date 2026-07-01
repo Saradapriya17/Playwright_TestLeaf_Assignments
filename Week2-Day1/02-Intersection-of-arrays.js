@@ -7,7 +7,6 @@ let uniqueVal1 = new Set(arr1);
 let uniqueVal2 = new Set(arr2);
 uniqueArrVal1 = Array(...uniqueVal1);
 uniqueArrVal2 = Array(...uniqueVal2);
-console.log(uniqueArrVal1);
 let resultArray = [];
 
 for (let i = 0; i < uniqueArrVal1.length; i++) {
