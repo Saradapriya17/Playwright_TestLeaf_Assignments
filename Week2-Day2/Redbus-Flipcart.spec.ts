@@ -15,7 +15,7 @@ test("Redbus - Chrome, FlipKart - Firefox", async () => {
 
   const browserFirefox = await firefox.launch({ headless: false });
   const contextFirefox = await browserFirefox.newContext();
-  const pageFirefox = await browserFirefox.newPage();
+  const pageFirefox = await contextFirefox.newPage();
   await pageFirefox.goto("https://www.flipkart.com");
   const titleFirefox = await pageFirefox.title();
   const urlFirefox = await pageFirefox.url();
