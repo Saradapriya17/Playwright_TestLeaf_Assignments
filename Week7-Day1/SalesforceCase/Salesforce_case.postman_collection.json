@@ -1,0 +1,208 @@
+{
+  "info": {
+    "_postman_id": "df3fd009-b287-499c-a25c-d784c1cdd94e",
+    "name": "Salesforce_case",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57032930",
+    "_collection_link": "https://go.postman.co/collection/57032930-df3fd009-b287-499c-a25c-d784c1cdd94e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create_Case",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const responseJson = pm.response.json();\r",
+              "const caseId = responseJson.id;\r",
+              "pm.globals.set(\"caseId\", caseId);   "
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n    \"ContactId\": \"003g500000XcwWDAAZ\",\r\n    \"Status\":\"Escalated\",\r\n    \"Origin\":\"Email\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{instance_url}}/services/data/v62.0/sobjects/Case",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v62.0",
+            "sobjects",
+            "Case"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch_Case",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "pm.test(\"Status code\", function () {\r",
+              "    console.log(pm.response.code);\r",
+              "    pm.globals.set(\"CaseNumber\", pm.response.json().CaseNumber);\r",
+              "    })"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{instance_url}}/services/data/v62.0/sobjects/Case/{{caseId}}",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v62.0",
+            "sobjects",
+            "Case",
+            "{{caseId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete_Case",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () { \r",
+              "    pm.response.to.have.status(204); })\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"CaseNumber\": {{CaseNumber}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{instance_url}}/services/data/v62.0/sobjects/Case/{{caseId}}",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v62.0",
+            "sobjects",
+            "Case",
+            "{{caseId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,342 @@
+{
+  "info": {
+    "_postman_id": "481d2516-4a0f-4935-99d2-890970799f4e",
+    "name": "Salesforce_opportunity",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57032930",
+    "_collection_link": "https://go.postman.co/collection/57032930-481d2516-4a0f-4935-99d2-890970799f4e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get_token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const responseBody = pm.response.json();\r",
+              "const accessToken = responseBody.access_token;  \r",
+              "const instanceUrl = responseBody.instance_url;  \r",
+              "pm.globals.set(\"accessToken\", accessToken);  \r",
+              "pm.globals.set(\"instanceUrl\", instanceUrl);  "
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "type": "text",
+              "uuid": "4f9298a9-ea19-4e7f-a3b9-4ea2294f5364",
+              "value": "client_credentials"
+            },
+            {
+              "key": "client_id",
+              "type": "text",
+              "uuid": "7260ab59-fbd9-401e-9955-e8e05ebfc2b5",
+              "value": "{{salesforce_consumer_key_0gu6}}"
+            },
+            {
+              "key": "client_secret",
+              "type": "text",
+              "uuid": "c3decc29-dce3-4361-82fa-d994f79927a7",
+              "value": "AE449B147B03A0BD782359208AC5A6C3BBB947A352AD4ABECCC9EF28AECB2791"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://orgfarm-64de35b545-dev-ed.develop.my.salesforce.com/services/oauth2/token",
+          "protocol": "https",
+          "host": [
+            "orgfarm-64de35b545-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "oauth2",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create_Opportunity",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const responseOpp = pm.response.json();\r",
+              "const opportunityId = responseOpp.id;\r",
+              "pm.globals.set(\"Opportuinty_Id\",opportunityId);\r",
+              "pm.test(\"Check if the opportunity was created successfully\", function () {\r",
+              "    pm.expect(responseOpp.success).to.be.true;\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"CloseDate\":\"2025-03-15\",\r\n    \"StageName\":\"Prospecting\",\r\n    \"Name\":\"Sara\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{instance_url}}/services/data/v59.0/sobjects/Opportunity",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v59.0",
+            "sobjects",
+            "Opportunity"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update_Opportunity",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r",
+              "    pm.response.to.have.status(204);    })"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Type\":\"New Customer\",\r\n    \"StageName\":\"Prospecting\"\r\n}"
+        },
+        "url": {
+          "raw": "{{instance_url}}/services/data/v59.0/sobjects/Opportunity/{{Opportuinty_Id}}",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v59.0",
+            "sobjects",
+            "Opportunity",
+            "{{Opportuinty_Id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch_Opportunity",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Fetching opportunity Successfully\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{instance_url}}/services/data/v59.0/sobjects/Opportunity",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v59.0",
+            "sobjects",
+            "Opportunity"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete_Opportunity",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r",
+              "    pm.response.to.have.status(204);})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{instance_url}}/services/data/v59.0/sobjects/Opportunity/{{Opportuinty_Id}}",
+          "host": [
+            "{{instance_url}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v59.0",
+            "sobjects",
+            "Opportunity",
+            "{{Opportuinty_Id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "salesforce_consumer_key_0gu6",
+      "secret": true
+    }
+  ]
+}
